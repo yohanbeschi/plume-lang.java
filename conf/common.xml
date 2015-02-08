@@ -1,0 +1,163 @@
+<project name="targets" basedir="../"
+         xmlns:isk="http://fake.isk.org/ant-macros"
+         xmlns:ivy="antlib:org.apache.ivy.ant"
+         xmlns:ac="http://ant-contrib.sourceforge.net">
+  <import file="properties.xml" />
+  <import file="macros.xml" />
+  <description>Common targets</description>
+
+  <!--+=========================================================================================+-->
+  <!--+ List projects                                                                           +-->
+  <!--+=========================================================================================+-->
+  <target name="nop" description="Checks projects build">
+    <echo>in ${basedir}</echo>
+  </target>
+
+  <!--+=========================================================================================+-->
+  <!--+ Ivy                                                                                     +-->
+  <!--+=========================================================================================+-->
+  <target name="-ivy.jar.check">
+    <available file="${ivy.jar.file}" property="ivy.jar.exists" />
+  </target>
+
+  <target name="-install-ivy" depends="-ivy.jar.check" unless="ivy.jar.exists" description="Install Ivy if not present">
+    <echo>Install Ivy if needed</echo>
+    <isk:install-ivy />
+  </target>
+
+  <target name="-init-ivy" depends="-install-ivy" description="Set Ivy TaskDef">
+    <echo>TaskDef Ivy</echo>
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.classpath"/>
+  </target>
+
+  <target name="clean-ivy" description="Clean the ivy installation">
+    <echo>Remove ivy/ and lib/ directories</echo>
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${lib.dir}"/>
+      <fileset dir="${ivy.dir}"/>
+    </delete>
+  </target>
+
+  <target name="clean-cache" depends="-init" description="Clean the Ivy cache">
+    <echo>Clean the Ivy cache</echo>
+    <ivy:cleancache/>
+  </target>
+
+  <target name="retrieve-libs" depends="-init-ivy" description="Retrieve dependencies">
+    <echo>Retrieve all dependencies</echo>
+    <mkdir dir="${lib.compile.dir}" />
+    <mkdir dir="${lib.provided.dir}" />
+    <mkdir dir="${lib.test.dir}" />
+    <mkdir dir="${lib.tasks.dir}" />
+
+    <ivy:retrieve conf="compile" pattern="${lib.compile.dir}/[artifact]-[revision].[ext]" type="jar" />
+    <ivy:retrieve conf="provided" pattern="${lib.provided.dir}/[artifact]-[revision].[ext]" type="jar" />
+    <ivy:retrieve conf="test" pattern="${lib.test.dir}/[artifact]-[revision].[ext]" type="jar" />
+    <ivy:retrieve conf="tasks" pattern="${lib.tasks.dir}/[artifact]-[revision].[ext]" type="jar" />
+  </target>
+
+  <target name="report" depends="retrieve-libs" description="Generates dependencies reports">
+    <echo>Generate dependencies reports</echo>
+    <ivy:report todir="${build.dependencies-reports.dir}" conf="test,tasks" />
+  </target>
+
+  <!--+=========================================================================================+-->
+  <!--+ Init                                                                                    +-->
+  <!--+=========================================================================================+-->
+  <target name="-init" depends="-init-ivy, retrieve-libs" description="Set AntContrib TaskDef">
+    <echo>TaskDef AntContrib</echo>
+    <taskdef resource="net/sf/antcontrib/antlib.xml" uri="http://ant-contrib.sourceforge.net" classpathref="antcontrib.classpath"/>
+  </target>
+
+  <!--+=========================================================================================+-->
+  <!--+ Clean                                                                                   +-->
+  <!--+=========================================================================================+-->
+  <target name="clean" description="Removes directories: build &amp; lib">
+    <echo>Remove build/ and lib/ directories</echo>
+    <delete dir="${build.dir}" />
+    <delete dir="${lib.dir}" />
+  </target>
+
+  <!--+=========================================================================================+-->
+  <!--+ Compile                                                                                 +-->
+  <!--+=========================================================================================+-->
+  <!-- Compile and move resources -->
+  <target name="compile.main" depends="-init">
+    <isk:compiler srcDir="${src.main.java.dir}" destDir="${build.classes.dir}" />
+  </target>
+
+  <target name="compile.test" depends="compile.main">
+    <isk:compiler srcDir="${src.test.java.dir}" 
+                  destDir="${build.test-classes.dir}"
+                  classpath="compile.test.classpath" />
+  </target>
+
+  <target name="move.main.resources">
+    <isk:resources from="${src.main.resources.dir}"  to="${build.classes.dir}" />  
+  </target>
+
+  <target name="move.test.resources">
+    <isk:resources from="${src.test.resources.dir}"  to="${build.test-classes.dir}" />  
+  </target>
+
+  <target name="compile" depends="compile.main, compile.test, move.main.resources, move.test.resources">
+    <echo>Compiling the project if needed</echo>
+  </target>
+
+  <!--+=========================================================================================+-->
+  <!--+ Test                                                                                    +-->
+  <!--+=========================================================================================+-->
+  <target name="test" depends="compile" description="Rum tests">
+    <isk:tester classpath="run.test.classpath"
+                dataDir="${build.junit-data.dir}"
+                testClass="${testClass}"
+                testMethod="${testMethod}"
+                testDir="${build.test-classes.dir}"
+                reportsDir="${build.junit-reports.dir}" />
+  </target>
+
+  <!--+=========================================================================================+-->
+  <!--+ Release                                                                                 +-->
+  <!--+=========================================================================================+-->
+    <target name="git.revision" description="Store git revision in ${repository.version}">
+    <available file=".git" type="dir" property="git.present"/>
+    <fail message="This is not a git project">
+     <condition>
+       <not>
+         <isset property="git.present"/>
+       </not>
+     </condition>
+    </fail>
+    <exec executable="git" outputproperty="git.revision" failifexecutionfails="true" errorproperty="">
+        <arg value="rev-parse"/>
+        <arg value="--short"/>
+        <arg value="HEAD"/>
+    </exec>
+    <condition property="last.commit.hash" value="${git.revision}" else="unknown">
+        <and>
+            <isset property="git.revision"/>
+            <length string="${git.revision}" trim="yes" length="0" when="greater"/>
+        </and>
+    </condition>
+    <echo>Last git commit: ${last.commit.hash}</echo>
+  </target>
+
+  <target name="jar" depends="test, git.revision" description="Package the application">
+    <tstamp>
+      <format property="now" pattern="yyyyMMdd-hhmmss" />
+    </tstamp>
+    <property name="version" value="${app.version}.${last.commit.hash}"/>
+    <isk:jarlib jarName="${build.dir}/${ant.project.name}" 
+                srcDir="${build.classes.dir}" />
+  </target>
+
+  <target name="publish-local" depends="jar" description="Publish this project in the local ivy repository">
+    <ivy:publish artifactspattern="${build.dir}/[artifact]-[revision].[ext]"
+                 resolver="local"
+                 pubrevision="${last.commit.hash}"
+                 pubdate="${now}"
+                 status="integration"
+                 forcedeliver="true" />
+    <echo message="project ${ant.project.name} published locally with version ${last.commit.hash}" />
+  </target>
+</project>
