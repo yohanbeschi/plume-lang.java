@@ -139,6 +139,7 @@
             <length string="${git.revision}" trim="yes" length="0" when="greater"/>
         </and>
     </condition>
+    <property name="version" value="${app.version}.${last.commit.hash}"/>
     <echo>Last git commit: ${last.commit.hash}</echo>
   </target>
 
@@ -151,13 +152,44 @@
                 srcDir="${build.classes.dir}" />
   </target>
 
-  <target name="publish-local" depends="jar" description="Publish this project in the local ivy repository">
+  <target name="jar-sources" depends="test, git.revision" description="Package the sources">
+    <property name="version" value="${app.version}.${last.commit.hash}"/>
+    <isk:jarlib jarName="${build.dir}/${ant.project.name}-sources" 
+                srcDir="${src.main.java.dir}" />
+  </target>
+
+  <target name="javadoc" depends="-init, git.revision" description="Generate the JavaDoc">
+     <ac:if>
+        <available file="${src.main.java.dir}" type="dir" />
+        <ac:then>
+          
+          <javadoc sourcepath="${src.main.java.dir}" destdir="${build.javadoc.dir}"
+                   windowtitle="${ant.project.name}-${version}"
+                   private="true"
+                   failonerror="true"/>
+        </ac:then>
+        <ac:else>
+          <echo>The folder @{src.main.java.dir} DO NOT exist</echo>
+        </ac:else>
+      </ac:if>
+  </target>
+
+  <target name="jar-javadoc" depends="javadoc" description="Package the JavaDoc">
+    <isk:jarlib jarName="${build.dir}/${ant.project.name}-javadoc" 
+                srcDir="${build.javadoc.dir}" />
+  </target>
+
+  <target name="release" depends="clean, jar, jar-sources, jar-javadoc" description="Package the application, the sources and the JavaDoc">
+
+  </target>
+
+  <target name="publish-local" depends="release" description="Publish this project in the local Ivy repository">
     <ivy:publish artifactspattern="${build.dir}/[artifact]-[revision].[ext]"
                  resolver="local"
-                 pubrevision="${last.commit.hash}"
+                 pubrevision="${version}"
                  pubdate="${now}"
                  status="integration"
                  forcedeliver="true" />
-    <echo message="project ${ant.project.name} published locally with version ${last.commit.hash}" />
+    <echo message="Project ${ant.project.name} published locally with version ${version}" />
   </target>
 </project>

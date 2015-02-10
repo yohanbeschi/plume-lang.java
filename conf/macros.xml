@@ -140,12 +140,13 @@
   <macrodef name="jarlib" uri="${macros.uri}">
     <attribute name="jarName"/>
     <attribute name="srcDir"/>
+    <attribute name="type" default="" />
 
     <sequential>
       <ac:if>
         <available file="@{srcDir}" type="dir" />
         <ac:then>
-          <jar destfile="@{jarName}-${version}.jar" basedir="@{srcDir}" />
+          <jar destfile="@{jarName}-${version}@{type}.jar" basedir="@{srcDir}" />
         </ac:then>
         <ac:else>
           <echo>The folder @{srcDir} DO NOT exist</echo>

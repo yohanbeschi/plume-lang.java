@@ -49,6 +49,7 @@
   <property name="build.test-classes.dir" location="${build.dir}/test-classes" />
   <property name="build.junit-data.dir" location="${build.dir}/junit-data" />
   <property name="build.junit-reports.dir" location="${build.dir}/junit-reports" />
+  <property name="build.javadoc.dir" location="${build.dir}/javadoc" />
   <property name="build.dependencies-reports.dir" location="${build.dir}/dependencies-reports" />
   
   <!--+=========================================================================================+-->

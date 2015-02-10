@@ -3,10 +3,17 @@
 Smalltalk-like interpreter in Java.
 
 ## Setup
-Only Ant needs to be installed and accessible from a command line:
+Java 8 and Ant need to be installed and accessible from a command line:
+
+	$ java -version
+	java version "1.8.0_20"
+	Java(TM) SE Runtime Environment (build 1.8.0_20-b26)
+	Java HotSpot(TM) 64-Bit Server VM (build 25.20-b23, mixed mode)
 
 	$ ant -version
 	Apache Ant(TM) version 1.9.4 compiled on April 29 2014
+
+Both must be added to your PATH, and JAVA_HOME and ANT_HOME environment variables must be set.
 
 ### Default target (jar)
 	
@@ -26,7 +33,11 @@ Only Ant needs to be installed and accessible from a command line:
 			 Move the result src/test/resources to build/test-classes
 	test: Run tests
 	jar: Create a JAR from build/classes
-	publish-local: Publish the generated JAR to ivy local repository
+	javadoc: Generate the JavaDoc
+	jar-javadoc: Package the JavaDoc into a JAR
+	jar-sources: Package the sources (src/main/java) into a JAR
+	release: Call jar, jar-javadoc and jar-sources
+	publish-local: Publish the generated JARs to Ivy local repository
 
 ### Other (accessible) Targets
 
@@ -39,7 +50,15 @@ Only Ant needs to be installed and accessible from a command line:
 ## Project Organization
 	<project>
 	|  +- build (generated)
+	|  |  +- classes
+	|  |  +- javadoc
+	|  |  +- junit-data
+	|  |  +- junit-reports
+	|  |  +- test-classes
 	|  +- conf (Ant configuration files)
+	|  |  +- common.xml (common targets)
+	|  |  +- macros.xml (common tasks as macros)
+	|  |  +- properties.xml (project properties and paths)
 	|  +- ivy (generated)
 	|  +- lib (generated)
 	|  |  +- compile

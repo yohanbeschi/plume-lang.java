@@ -13,9 +13,9 @@
   </configurations>
 
   <publications>
-    <artifact name="${ant.project.name}" />
-    <!--artifact name="${ant.project.name}" type="sources"/-->
-    <!--artifact name="${ant.project.name}" type="javadocs"/-->
+    <artifact name="${ant.project.name}" type="jar" ext="jar" />
+    <artifact name="${ant.project.name}-sources" type="source" ext="jar" />
+    <artifact name="${ant.project.name}-javadoc" type="javadoc" ext="jar" />
   </publications>
 
   <dependencies>
