@@ -1,5 +1,7 @@
 package org.isk.plume.unicode;
 
+import java.io.Serializable;
+
 public class UnicodeTestData {
   final public static byte[] UTF8_NOBOM_BYTEARRAY = { //
   0x61, // U+0061
@@ -70,5 +72,29 @@ public class UnicodeTestData {
       (byte) 0x83, 00, 0x01, 0 // U+10083
   };
 
-  final public static int[] CODEPOINTS = { 0x0061, 0x0928, 0x093F, 0x04E9C, 0x10083 };
+  final public static int[] CODEPOINTS = { 0x0061, 0x0928, 0x093F, 0x4E9C, 0x10083 };
+
+  final public static String CODEPOINTS_AS_STRING = new String(UnicodeTestData.CODEPOINTS, 0, 5);
+
+  public static class Line implements Serializable {
+    private static final long serialVersionUID = 1L;
+    final int codePoint;
+    final byte[] utf8;
+    final byte[] utf16be;
+    final byte[] utf16le;
+    final byte[] utf32be;
+    final byte[] utf32le;
+
+    public Line(final int codePoint, final byte[] utf8, //
+        final byte[] utf16be, final byte[] utf16le, //
+        final byte[] utf32be, final byte[] utf32le) {
+      super();
+      this.codePoint = codePoint;
+      this.utf8 = utf8;
+      this.utf16be = utf16be;
+      this.utf16le = utf16le;
+      this.utf32be = utf32be;
+      this.utf32le = utf32le;
+    }
+  }
 }
