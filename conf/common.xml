@@ -166,7 +166,9 @@
           <javadoc sourcepath="${src.main.java.dir}" destdir="${build.javadoc.dir}"
                    windowtitle="${ant.project.name}-${version}"
                    private="true"
-                   failonerror="true"/>
+                   failonerror="true">
+            <link href="${java.doc.api}" />
+          </javadoc>
         </ac:then>
         <ac:else>
           <echo>The folder @{src.main.java.dir} DO NOT exist</echo>
