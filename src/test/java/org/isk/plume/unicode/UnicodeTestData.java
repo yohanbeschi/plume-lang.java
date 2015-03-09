@@ -3,6 +3,12 @@ package org.isk.plume.unicode;
 import java.io.Serializable;
 
 public class UnicodeTestData {
+  final public static java.nio.charset.Charset NIO_CHARSET_UTF8 = java.nio.charset.Charset.forName("UTF-8");
+  final public static java.nio.charset.Charset NIO_CHARSET_UTF16BE = java.nio.charset.Charset.forName("UTF-16BE");
+  final public static java.nio.charset.Charset NIO_CHARSET_UTF16LE = java.nio.charset.Charset.forName("UTF-16LE");
+  final public static java.nio.charset.Charset NIO_CHARSET_UTF32BE = java.nio.charset.Charset.forName("UTF-32BE");
+  final public static java.nio.charset.Charset NIO_CHARSET_UTF32LE = java.nio.charset.Charset.forName("UTF-32LE");
+
   final public static byte[] UTF8_NOBOM_BYTEARRAY = { //
   0x61, // U+0061
       (byte) 0xE0, (byte) 0xA4, (byte) 0xA8, // U+0928
