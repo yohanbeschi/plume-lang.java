@@ -332,16 +332,16 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * U+E000..U+F8FF: BMP (0) - 6400 code points<br>
-   * U+F0000..U+FFFFD: PUP (15) - 65534 code points<br>
-   * U+100000..U+10FFFD: PUP (16) - 65534 code points
+   * U+E000..U+F8FF: BMP (0) - 6400 code points.<br>
+   * U+F0000..U+FFFFD: PUP (15) - 65534 code points.<br>
+   * U+100000..U+10FFFD: PUP (16) - 65534 code points.
    */
   final public static int NUMBER_OF_CODEPOINTS_IN_PRIVATE_USE_AREA = 137_468;
 
   /**
    * <p>
-   * U+FDD0..U+FDEF: BMP (0) - 32 code points<br>
-   * All code points ending by 0xFFFE or 0xFFFF. 17 planes * 2 = 34 code points
+   * U+FDD0..U+FDEF: BMP (0) - 32 code points.<br>
+   * All code points ending by 0xFFFE or 0xFFFF. 17 planes * 2 = 34 code points.
    */
   final public static int NUMBER_OF_NONCHARACTERS = 66;
 
@@ -385,7 +385,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Instantiate a new <code>CodePoints</code>.
+   * Instantiates a new <code>CodePoints</code>.
    * <p>
    * The initial buffer will be {@link DEFAULT_BUFFER_SIZE}.
    */
@@ -395,7 +395,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Instantiate a new <code>CodePoints</code> with an initial size.
+   * Instantiates a new <code>CodePoints</code> with an initial size.
    * <p>
    * This size will be used thereafter to grow the buffer size if we don't have enough room to add a new code point.
    * 
@@ -416,7 +416,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Instantiate a new <code>CodePoints</code> with an array of code points.
+   * Instantiates a new <code>CodePoints</code> with an array of code points.
    * <p>
    * The initial size of the buffer will be the length of the array. Therefore, if a new code point if added, the buffer
    * size will have to be grown, and it will be by the length of the array. And so on every time we will have to expand
@@ -436,7 +436,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Instantiate a new <code>CodePoints</code> with an array of code points and the buffer growth size.
+   * Instantiates a new <code>CodePoints</code> with an array of code points and the buffer growth size.
    * <p>
    * The initial size of the buffer will be the length of the array. Therefore, if a new code point is added, the buffer
    * size will have to be grown, and it will be by the length of the array. And so on every time we will have to expand
@@ -463,7 +463,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Instantiate a new <code>CodePoints</code> by taking an array of bytes representing code units of a specified
+   * Instantiates a new <code>CodePoints</code> by taking an array of bytes representing code units of a specified
    * encoding.
    * <p>
    * If the size of the array is bigger than {@link DEFAULT_BUFFER_SIZE} you should use the constructor
@@ -480,7 +480,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Instantiate a new <code>CodePoints</code> by taking an {@link UnicodeInputStream} representing code units of a
+   * Instantiates a new <code>CodePoints</code> by taking an {@link UnicodeInputStream} representing code units of a
    * specified encoding.
    * <p>
    * If the number of bytes in the {@link UnicodeInputStream} is bigger than {@link DEFAULT_BUFFER_SIZE} you should use
@@ -497,7 +497,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Instantiate a new <code>CodePoints</code> by taking an {@link UnicodeInputStream} representing code units of a
+   * Instantiates a new <code>CodePoints</code> by taking an {@link UnicodeInputStream} representing code units of a
    * specified encoding with an initial size.
    * 
    * @param charset
@@ -523,7 +523,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Get the number of code points stored in the buffer.
+   * Gets the number of code points stored in the buffer.
    * <p>
    * But be careful, even if this class solve the problem of code points outside of the BMP, it DOESN'T solve the
    * problem of the graphemes count (what we usually call "characters"). For most scripts it's not a problem as one code
@@ -546,12 +546,12 @@ public class CodePoints implements Iterable<Integer> {
    * @param newLength
    *          is the new length of the code points sequence.
    * @throws UnicodeException
-   *           if the new length is out of range (<tt>length() &lt; 0 || length() &gt;= size()</tt>)
+   *           if the new length is out of range (<tt>length() &lt; 0 || length() &gt;= size()</tt>).
    */
   public void setLength(final int newLength) {
     if (newLength < 0 || newLength > this.index) {
       throw new UnicodeException("The new length is outside of range (" + newLength
-          + "). It should be greater than 0 and less or equals than the current length.");
+          + "). It should be greater than or equal to 0 and less than or equal to the current length.");
     }
 
     this.index = newLength;
@@ -559,7 +559,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Clear the buffer.
+   * Clears the buffer.
    * <p>
    * Clearing the buffer instead of creating a new instance of {@link CodePoints} is less memory consuming as we don't
    * have to create a new int array.
@@ -570,7 +570,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Add a code point to the buffer.
+   * Adds a code point to the buffer.
    * <p>
    * If the code point is the BOM it will be added but it shouldn't as it doesn't have another meaning than indicating
    * the byte order of code units. Used as an indication of non-breaking is deprecated, see U+2060 instead.
@@ -587,7 +587,7 @@ public class CodePoints implements Iterable<Integer> {
   }
 
   /**
-   * Add an array of code points to the buffer.
+   * Adds an array of code points to the buffer.
    * 
    * @param codePoints
    *          is an array of code points to add to the buffer.
@@ -599,7 +599,7 @@ public class CodePoints implements Iterable<Integer> {
   }
 
   /**
-   * Add the code points of a string to the buffer.
+   * Adds the code points of a string to the buffer.
    * 
    * @param s
    *          is the string to add to the buffer.
@@ -615,12 +615,12 @@ public class CodePoints implements Iterable<Integer> {
    *          is the index of the code point to return.
    * @return the code point at the specified position in this buffer.
    * @throws UnicodeException
-   *           if the index is out of range (<tt>length() &lt; 0 || length() &gt;= size()</tt>)
+   *           if the index is out of range (<tt>length() &lt; 0 || length() &gt;= size()</tt>).
    */
   public int at(final int index) {
     if (index < 0 || index >= this.index) {
       throw new UnicodeException("Index outside of range (" + index
-          + "). It should be greater than 0 and less or equals than the current length.");
+          + "). It should be greater than or equal to 0 and less than the current length.");
     }
 
     return this.buffer[index];
@@ -688,7 +688,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Decode the code units contained by an {@link UnicodeInputStream} from a specified encoding to code points.
+   * Decodes the code units contained by an {@link UnicodeInputStream} from a specified encoding to code points.
    * <p>
    * The code points will be added to the internal buffer.
    * 
@@ -709,7 +709,7 @@ public class CodePoints implements Iterable<Integer> {
 
   /**
    * <p>
-   * Encode the code points in the internal buffer encoded to code units of a specified encoding.
+   * Encodes the code points in the internal buffer encoded to code units of a specified encoding.
    * <p>
    * If there is a BOM code point at the beginning of the code points array, it will be removed.
    * 
@@ -737,12 +737,12 @@ public class CodePoints implements Iterable<Integer> {
   }
 
   /**
-   * Decode a byte array of code units from a specified encoding to an array of code points.
+   * Decodes a byte array of code units from a specified encoding to an array of code points.
    * 
    * @param fromCharset
    *          is the input encoding.
    * @param utf
-   *          is a byte array of code units
+   *          is a byte array of code units.
    * @return an array of code points.
    */
   public static int[] toCodePoints(final Charset fromCharset, final byte[] utf) {
@@ -751,10 +751,10 @@ public class CodePoints implements Iterable<Integer> {
   }
 
   /**
-   * Encode an array of code points to a byte array of code units of a specified encoding.
+   * Encodes an array of code points to a byte array of code units of a specified encoding.
    * 
    * @param codePointsArray
-   *          is an array of code points
+   *          is an array of code points.
    * @param outputCharset
    *          is the output encoding.
    * @return a byte array of code units.
@@ -765,7 +765,7 @@ public class CodePoints implements Iterable<Integer> {
   }
 
   /**
-   * Encode a byte array of code units from a specified encoding to another byte array of code units of another
+   * Encodes a byte array of code units from a specified encoding to another byte array of code units of another
    * specified encoding.
    * 
    * @param bytes
@@ -785,7 +785,7 @@ public class CodePoints implements Iterable<Integer> {
   }
 
   /**
-   * Encode the code units contained by an {@link UnicodeInputStream} from a specified encoding to a byte array of code
+   * Encodes the code units contained by an {@link UnicodeInputStream} from a specified encoding to a byte array of code
    * units of another specified encoding.
    * 
    * @param inputStream
@@ -890,7 +890,7 @@ public class CodePoints implements Iterable<Integer> {
      * 
      * @param charset
      *          is the input encoding.
-     * @return an {@link UtfToCodePoint}
+     * @return an {@link UtfToCodePoint}.
      */
     public static UtfToCodePoint findUtfToCodePoint(final Charset charset) {
       switch (charset) {
@@ -920,7 +920,7 @@ public class CodePoints implements Iterable<Integer> {
      * 
      * @param charset
      *          is the output encoding.
-     * @return a {@link CodePointToUtf}
+     * @return a {@link CodePointToUtf}.
      */
     public static CodePointToUtf findCodePointToUtf(final Charset charset) {
       switch (charset) {
@@ -945,7 +945,7 @@ public class CodePoints implements Iterable<Integer> {
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * <p>
-     * Check and discard the BOM (if any) from the {@link UnicodeInputStream}.
+     * Checks and discards the BOM (if any) from the {@link UnicodeInputStream}.
      * <p>
      * Only {@link Charset#UTF8} doesn't have a BOM.
      * 
@@ -1025,7 +1025,7 @@ public class CodePoints implements Iterable<Integer> {
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * Initialize a new {@link ByteArrayOutputStream} and add the correct BOM (if any).
+     * Initializes a new {@link ByteArrayOutputStream} and add the correct BOM (if any).
      * 
      * @param charset
      *          is the character set corresponding to the encoding of the characters that will be added to the
@@ -1076,7 +1076,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Decode the next character (from the {@link UnicodeInputStream}) represented by code units of UTF-8 to its
+     * Decodes the next character (from the {@link UnicodeInputStream}) represented by code units of UTF-8 to its
      * corresponding code point.
      * <p>
      * Before calling this method you should call {@link UnicodeInputStream#hasNext()}, otherwise if there is no more
@@ -1122,7 +1122,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Decode the next character from the {@link UnicodeInputStream} represented by code units of UTF-16BE to its
+     * Decodes the next character from the {@link UnicodeInputStream} represented by code units of UTF-16BE to its
      * corresponding code point.
      * <p>
      * Before calling this method you should call {@link UnicodeInputStream#hasNext()}, otherwise if there is no more
@@ -1151,7 +1151,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Decode the next character from the {@link UnicodeInputStream} represented by code units of UTF-16LE to its
+     * Decodes the next character from the {@link UnicodeInputStream} represented by code units of UTF-16LE to its
      * corresponding code point.
      * <p>
      * Before calling this method you should call {@link UnicodeInputStream#hasNext()}, otherwise if there is no more
@@ -1180,7 +1180,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Decode the next character from the {@link UnicodeInputStream} represented by code units of UTF-32BE to its
+     * Decodes the next character from the {@link UnicodeInputStream} represented by code units of UTF-32BE to its
      * corresponding code point.
      * <p>
      * Before calling this method you should call {@link UnicodeInputStream#hasNext()}, otherwise if there is no more
@@ -1200,7 +1200,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Decode the next character from the {@link UnicodeInputStream} represented by code units of UTF-32LE to its
+     * Decodes the next character from the {@link UnicodeInputStream} represented by code units of UTF-32LE to its
      * corresponding code point.
      * <p>
      * Before calling this method you should call {@link UnicodeInputStream#hasNext()}, otherwise if there is no more
@@ -1224,7 +1224,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Encode a code point to UTF-8 code units (with or without BOM it doesn't make any difference) and add them to the
+     * Encodes a code point to UTF-8 code units (with or without BOM it doesn't make any difference) and add them to the
      * {@link ByteArrayOutputStream}.
      * <p>
      * <u>Important note</u>: The {@link ByteArrayOutputStream} SHOULD be instantiated by the method
@@ -1257,7 +1257,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Encode a code point to UTF-16BE code units and add it to the {@link ByteArrayOutputStream}.
+     * Encodes a code point to UTF-16BE code units and add it to the {@link ByteArrayOutputStream}.
      * <p>
      * <u>Important note</u>: The {@link ByteArrayOutputStream} SHOULD be instantiated by the method
      * {@link Converter#initByteArray(CodePoints.Charset)} which will add the correct BOM at the beginning of the
@@ -1286,7 +1286,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Encode a code point to UTF-16LE code units and add it to the {@link ByteArrayOutputStream}.
+     * Encodes a code point to UTF-16LE code units and add it to the {@link ByteArrayOutputStream}.
      * <p>
      * <u>Important note</u>: The {@link ByteArrayOutputStream} SHOULD be instantiated by the method
      * {@link Converter#initByteArray(CodePoints.Charset)} which will add the correct BOM at the beginning of the
@@ -1315,7 +1315,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Encode a code point to UTF-32BE code units and add it to the {@link ByteArrayOutputStream}.
+     * Encodes a code point to UTF-32BE code units and add it to the {@link ByteArrayOutputStream}.
      * <p>
      * <u>Important note</u>: The {@link ByteArrayOutputStream} SHOULD be instantiated by the method
      * {@link Converter#initByteArray(CodePoints.Charset)} which will add the correct BOM at the beginning of the
@@ -1335,7 +1335,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Encode a code point to UTF-32LE code units and add it to the {@link ByteArrayOutputStream}.
+     * Encodes a code point to UTF-32LE code units and add it to the {@link ByteArrayOutputStream}.
      * <p>
      * <u>Important note</u>: The {@link ByteArrayOutputStream} SHOULD be instantiated by the method
      * {@link Converter#initByteArray(CodePoints.Charset)} which will add the correct BOM at the beginning of the
@@ -1359,7 +1359,7 @@ public class CodePoints implements Iterable<Integer> {
 
     /**
      * <p>
-     * Encode a byte array of code units representing ONE character from a specified encoding to another byte array of
+     * Encodes a byte array of code units representing ONE character from a specified encoding to another byte array of
      * code units of another specified encoding.
      * <p>
      * If <code>fromCharacter</code> is equals to <code>toCharacter</code> the input argument <code>oneCharacter</code>

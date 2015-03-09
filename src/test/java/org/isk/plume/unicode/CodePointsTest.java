@@ -157,7 +157,7 @@ public class CodePointsTest {
     } catch (final UnicodeException e) {
       Assert
           .assertEquals(
-              "The new length is outside of range (-1). It should be greater than 0 and less or equals than the current length.",
+              "The new length is outside of range (-1). It should be greater than or equal to 0 and less than or equal to the current length.",
               e.getMessage());
     }
   }
@@ -171,7 +171,7 @@ public class CodePointsTest {
     } catch (final UnicodeException e) {
       Assert
           .assertEquals(
-              "The new length is outside of range (6). It should be greater than 0 and less or equals than the current length.",
+              "The new length is outside of range (6). It should be greater than or equal to 0 and less than or equal to the current length.",
               e.getMessage());
     }
   }
@@ -272,7 +272,7 @@ public class CodePointsTest {
       Assert.fail();
     } catch (final UnicodeException e) {
       Assert.assertEquals(
-          "Index outside of range (-1). It should be greater than 0 and less or equals than the current length.",
+          "Index outside of range (-1). It should be greater than or equal to 0 and less than the current length.",
           e.getMessage());
     }
   }
@@ -285,7 +285,7 @@ public class CodePointsTest {
       Assert.fail();
     } catch (final UnicodeException e) {
       Assert.assertEquals(
-          "Index outside of range (5). It should be greater than 0 and less or equals than the current length.",
+          "Index outside of range (5). It should be greater than or equal to 0 and less than the current length.",
           e.getMessage());
     }
   }

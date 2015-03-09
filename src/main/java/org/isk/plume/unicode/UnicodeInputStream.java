@@ -21,7 +21,7 @@ public class UnicodeInputStream {
 
   /**
    * <p>
-   * Instantiate a new {@link UnicodeInputStream}.
+   * Instantiates a new {@link UnicodeInputStream}.
    * 
    * @param bytes
    *          are the bytes that will be read.
@@ -38,7 +38,7 @@ public class UnicodeInputStream {
 
   /**
    * <p>
-   * Instantiate a new {@link UnicodeInputStream}.
+   * Instantiates a new {@link UnicodeInputStream}.
    * 
    * @param inputStream
    *          is the {@link InputStream} that will be read.
@@ -55,7 +55,7 @@ public class UnicodeInputStream {
   }
 
   /**
-   * Check if there is something to read.
+   * Checks if there is something to read.
    * 
    * @return <code>true</code> if there is still something to read, <code>false</code> otherwise.
    * @throws UnicodeException
@@ -77,7 +77,7 @@ public class UnicodeInputStream {
 
   /**
    * <p>
-   * Read the next byte.
+   * Reads the next byte.
    * 
    * @return the next byte.
    * @throws UnicodeException
