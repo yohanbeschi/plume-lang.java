@@ -17,9 +17,8 @@ public class UnicodeInputStreamTest {
 
   @Test
   public void constructorBytes_null() {
-    try {
-      final byte[] bytes = null;
-      new UnicodeInputStream(bytes);
+    final byte[] bytes = null;
+    try (final UnicodeInputStream inputStream = new UnicodeInputStream(bytes)) {
       Assert.fail();
     } catch (final UnicodeException e) {
       Assert
@@ -29,9 +28,8 @@ public class UnicodeInputStreamTest {
 
   @Test
   public void constructorBytes_empty() {
-    try {
-      final byte[] bytes = new byte[0];
-      new UnicodeInputStream(bytes);
+    final byte[] bytes = new byte[0];
+    try (final UnicodeInputStream inputStream = new UnicodeInputStream(bytes)) {
       Assert.fail();
     } catch (final UnicodeException e) {
       Assert
@@ -48,9 +46,8 @@ public class UnicodeInputStreamTest {
 
   @Test
   public void constructorInputStream_null() {
-    try {
-      final InputStream inputStream = null;
-      new UnicodeInputStream(inputStream);
+    final InputStream inputStream = null;
+    try (final UnicodeInputStream otherInputStream = new UnicodeInputStream(inputStream)) {
       Assert.fail();
     } catch (final UnicodeException e) {
       Assert.assertEquals("Impossible to instantiate an UnicodeInputStream, the InputStream is null.", e.getMessage());
@@ -59,7 +56,9 @@ public class UnicodeInputStreamTest {
 
   @Test(expected = NullPointerException.class)
   public void constructorInputStream_NullByteArray() {
-    new UnicodeInputStream(new ByteArrayInputStream(null));
+    try (final UnicodeInputStream inputStream = new UnicodeInputStream(new ByteArrayInputStream(null))) {
+
+    }
   }
 
   @Test
@@ -72,58 +71,65 @@ public class UnicodeInputStreamTest {
   @Test
   public void hasNext() {
     final byte[] bytes = { 'a', 'b' };
-    final UnicodeInputStream stream = new UnicodeInputStream(bytes);
-    Assert.assertTrue(stream.hasNext());
-    stream.read();
-    Assert.assertTrue(stream.hasNext());
-    stream.read();
-    Assert.assertFalse(stream.hasNext());
-    Assert.assertFalse(stream.hasNext());
+    try (final UnicodeInputStream stream = new UnicodeInputStream(bytes)) {
+      Assert.assertTrue(stream.hasNext());
+      stream.read();
+      Assert.assertTrue(stream.hasNext());
+      stream.read();
+      Assert.assertFalse(stream.hasNext());
+      Assert.assertFalse(stream.hasNext());
+    }
   }
 
   @Test
   public void read_TooFar() {
     final byte[] bytes = { 'a', 'b' };
-    final UnicodeInputStream stream = new UnicodeInputStream(bytes);
-    stream.read();
-    stream.read();
 
-    try {
+    try (final UnicodeInputStream stream = new UnicodeInputStream(bytes);) {
       stream.read();
-      Assert.fail();
-    } catch (final UnicodeException e) {
-      Assert.assertEquals("This UnicodeInputStream has been read completely!", e.getMessage());
+      stream.read();
+
+      try {
+        stream.read();
+        Assert.fail();
+      } catch (final UnicodeException e) {
+        Assert.assertEquals("This UnicodeInputStream has been read completely!", e.getMessage());
+      }
     }
   }
 
   @Test
   public void unread() {
     final byte[] bytes = { 'a', 'b' };
-    final UnicodeInputStream stream = new UnicodeInputStream(bytes);
-    int b = stream.read();
-    stream.unread(b);
-    b = stream.read();
-    Assert.assertEquals('a', b);
 
-    b = stream.read();
-    stream.unread(b);
-    b = stream.read();
-    Assert.assertEquals('b', b);
+    try (final UnicodeInputStream stream = new UnicodeInputStream(bytes)) {
+      int b = stream.read();
+      stream.unread(b);
+      b = stream.read();
+      Assert.assertEquals('a', b);
+
+      b = stream.read();
+      stream.unread(b);
+      b = stream.read();
+      Assert.assertEquals('b', b);
+    }
   }
 
   @Test
   public void unread_pushBackBufferFull() {
     final byte[] bytes = { 'a', 'b' };
-    final UnicodeInputStream stream = new UnicodeInputStream(bytes);
-    final int b1 = stream.read();
-    final int b2 = stream.read();
-    stream.unread(b1);
 
-    try {
-      stream.unread(b2);
-      Assert.fail();
-    } catch (final UnicodeException e) {
-      Assert.assertEquals("Something went wrong while unreading this UnicodeInputStream!", e.getMessage());
+    try (final UnicodeInputStream stream = new UnicodeInputStream(bytes)) {
+      final int b1 = stream.read();
+      final int b2 = stream.read();
+      stream.unread(b1);
+
+      try {
+        stream.unread(b2);
+        Assert.fail();
+      } catch (final UnicodeException e) {
+        Assert.assertEquals("Something went wrong while unreading this UnicodeInputStream!", e.getMessage());
+      }
     }
   }
 

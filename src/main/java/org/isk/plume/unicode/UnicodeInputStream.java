@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.PushbackInputStream;
 
 import org.isk.plume.exception.UnicodeException;
+import org.isk.plume.inputstream.QuietAutoCloseable;
+import org.isk.plume.inputstream.QuietAutoCloseableException;
 
 /**
  * <p>
@@ -15,7 +17,7 @@ import org.isk.plume.exception.UnicodeException;
  * Unlike the standard {@link InputStream#read()}, if the end of the steam has been reached, the
  * {@link UnicodeInputStream#read()} method will throw an exception.
  */
-public class UnicodeInputStream {
+public class UnicodeInputStream implements QuietAutoCloseable {
 
   final private PushbackInputStream inputStream;
 
@@ -110,6 +112,22 @@ public class UnicodeInputStream {
       this.inputStream.unread(b);
     } catch (final IOException e) {
       throw new UnicodeException("Something went wrong while unreading this UnicodeInputStream!", e);
+    }
+  }
+
+  /*
+   * {@inheritDoc}
+   */
+  @Override
+  public void close() {
+    if (this.inputStream == null) {
+      return;
+    }
+
+    try {
+      this.inputStream.close();
+    } catch (final IOException e) {
+      throw new QuietAutoCloseableException("Something went wrong will trying to close input stream.", e);
     }
   }
 }

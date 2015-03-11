@@ -219,58 +219,71 @@ public class MappedCodePoints {
    *           if the stream is empty.
    */
   private void init(final MappedStreamBuilder builder) {
-    // Reads the first character to check if the stream is empty or not
-    if (!builder.hasNext()) {
-      if (this.filename == null) {
-        throw new MappedCodePointsException("This stream is empty.");
-      } else {
-        throw new MappedCodePointsException("This stream is empty (" + this.filename + ").");
+    try {
+      // Reads the first character to check if the stream is empty or not
+      if (!builder.hasNext()) {
+        if (this.filename == null) {
+          throw new MappedCodePointsException("This stream is empty.");
+        } else {
+          throw new MappedCodePointsException("This stream is empty (" + this.filename + ").");
+        }
       }
+
+      // Before stream
+      this.stream[0] = MappedCodePoints.LF;
+      this.columns[0] = 0;
+      this.lines[0] = 0;
+
+      int currentChar = 0;
+      int previousChar = 0;
+
+      // Reads characters
+      int index = 1; // 0 is for [before stream]
+      while (builder.hasNext()) {
+        currentChar = builder.nextCodePoint();
+
+        if (previousChar == MappedCodePoints.CR && currentChar == MappedCodePoints.LF) {
+          continue;
+        }
+
+        final int streamSize = this.stream.length;
+        if (index >= streamSize) {
+          this.stream = Arrays.copyOf(this.stream, MappedCodePoints.DEFAULT_BUFFER_SIZE + streamSize);
+          this.columns = Arrays.copyOf(this.columns, MappedCodePoints.DEFAULT_BUFFER_SIZE + streamSize);
+          this.lines = Arrays.copyOf(this.lines, MappedCodePoints.DEFAULT_BUFFER_SIZE + streamSize);
+        }
+
+        // CR replaced by LF
+        if (currentChar == MappedCodePoints.CR) {
+          this.stream[index] = MappedCodePoints.LF;
+        }
+        // Other characters (Skips CRLF)
+        else {
+          this.stream[index] = currentChar;
+        }
+
+        // Compute lines and columns
+        this.computeLinesAndColumns(index);
+
+        previousChar = currentChar;
+        index++;
+      }
+
+      this.setEosIndex(index);
+
+      if (this.eosIndex == 0) {
+        if (this.filename == null) {
+          throw new MappedCodePointsException("This stream is empty.");
+        } else {
+          throw new MappedCodePointsException("This stream is empty (" + this.filename + ").");
+        }
+      }
+
+      this.stream[this.eosIndex] = MappedCodePoints.EOS;
+      this.computeLinesAndColumns(this.eosIndex);
+    } finally {
+      builder.close();
     }
-
-    // Before stream
-    this.stream[0] = MappedCodePoints.LF;
-    this.columns[0] = 0;
-    this.lines[0] = 0;
-
-    int currentChar = 0;
-    int previousChar = 0;
-
-    // Reads characters
-    int index = 1; // 0 is for [before stream]
-    while (builder.hasNext()) {
-      currentChar = builder.nextCodePoint();
-
-      if (previousChar == MappedCodePoints.CR && currentChar == MappedCodePoints.LF) {
-        continue;
-      }
-
-      final int streamSize = this.stream.length;
-      if (index >= streamSize) {
-        this.stream = Arrays.copyOf(this.stream, MappedCodePoints.DEFAULT_BUFFER_SIZE + streamSize);
-        this.columns = Arrays.copyOf(this.columns, MappedCodePoints.DEFAULT_BUFFER_SIZE + streamSize);
-        this.lines = Arrays.copyOf(this.lines, MappedCodePoints.DEFAULT_BUFFER_SIZE + streamSize);
-      }
-
-      // CR replaced by LF
-      if (currentChar == MappedCodePoints.CR) {
-        this.stream[index] = MappedCodePoints.LF;
-      }
-      // Other characters (Skips CRLF)
-      else {
-        this.stream[index] = currentChar;
-      }
-
-      // Compute lines and columns
-      this.computeLinesAndColumns(index);
-
-      previousChar = currentChar;
-      index++;
-    }
-
-    this.setEosIndex(index);
-    this.stream[this.eosIndex] = MappedCodePoints.EOS;
-    this.computeLinesAndColumns(this.eosIndex);
   }
 
   /**
@@ -507,6 +520,8 @@ public class MappedCodePoints {
   private static interface MappedStreamBuilder {
     boolean hasNext();
 
+    void close();
+
     int nextCodePoint();
   }
 
@@ -537,6 +552,11 @@ public class MappedCodePoints {
     public int nextCodePoint() {
       return this.utfToCodePoint.toCodePoint(this.inputStream);
     }
+
+    @Override
+    public void close() {
+      this.inputStream.close();
+    }
   }
 
   private static class CodePointsArrayBuilder implements MappedStreamBuilder {
@@ -556,6 +576,11 @@ public class MappedCodePoints {
     @Override
     public int nextCodePoint() {
       return this.codePoints[this.index++];
+    }
+
+    @Override
+    public void close() {
+      // Do nothing
     }
   }
 }

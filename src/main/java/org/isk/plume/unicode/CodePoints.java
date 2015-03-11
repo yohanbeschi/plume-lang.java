@@ -699,12 +699,16 @@ public class CodePoints implements Iterable<Integer> {
    *          is an {@link UnicodeInputStream} containing code units.
    */
   private void toCodePoints(final Charset charset, final UnicodeInputStream inputStream) {
-    final UtfToCodePoint utfToCodePoint = Converter.findUtfToCodePoint(charset);
-    Converter.readBom(charset, inputStream);
+    try {
+      final UtfToCodePoint utfToCodePoint = Converter.findUtfToCodePoint(charset);
+      Converter.readBom(charset, inputStream);
 
-    while (inputStream.hasNext()) {
-      final int codePoint = utfToCodePoint.toCodePoint(inputStream);
-      this.add(codePoint);
+      while (inputStream.hasNext()) {
+        final int codePoint = utfToCodePoint.toCodePoint(inputStream);
+        this.add(codePoint);
+      }
+    } finally {
+      inputStream.close();
     }
   }
 
