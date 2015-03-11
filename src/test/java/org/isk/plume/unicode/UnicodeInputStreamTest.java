@@ -3,7 +3,7 @@ package org.isk.plume.unicode;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.isk.plume.exception.UnicodeException;
+import org.isk.plume.unicode.exception.UnicodeException;
 import org.junit.Assert;
 import org.junit.Test;
 

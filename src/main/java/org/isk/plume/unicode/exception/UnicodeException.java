@@ -1,4 +1,4 @@
-package org.isk.plume.exception;
+package org.isk.plume.unicode.exception;
 
 public class UnicodeException extends RuntimeException {
   private static final long serialVersionUID = 1L;

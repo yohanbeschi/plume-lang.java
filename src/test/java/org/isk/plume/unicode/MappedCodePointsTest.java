@@ -1,7 +1,7 @@
 package org.isk.plume.unicode;
 
-import org.isk.plume.exception.MappedCodePointsException;
 import org.isk.plume.unicode.CodePoints.Charset;
+import org.isk.plume.unicode.exception.MappedCodePointsException;
 import org.junit.Assert;
 import org.junit.Test;
 

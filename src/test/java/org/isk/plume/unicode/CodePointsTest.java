@@ -2,9 +2,9 @@ package org.isk.plume.unicode;
 
 import java.io.ByteArrayOutputStream;
 
-import org.isk.plume.exception.UnicodeException;
 import org.isk.plume.unicode.CodePoints.Charset;
 import org.isk.plume.unicode.CodePoints.Converter;
+import org.isk.plume.unicode.exception.UnicodeException;
 import org.junit.Assert;
 import org.junit.Test;
 

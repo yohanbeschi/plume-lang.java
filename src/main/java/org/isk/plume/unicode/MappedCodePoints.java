@@ -2,10 +2,10 @@ package org.isk.plume.unicode;
 
 import java.util.Arrays;
 
-import org.isk.plume.exception.MappedCodePointsException;
 import org.isk.plume.unicode.CodePoints.Charset;
 import org.isk.plume.unicode.CodePoints.Converter;
 import org.isk.plume.unicode.CodePoints.UtfToCodePoint;
+import org.isk.plume.unicode.exception.MappedCodePointsException;
 
 /**
  * <p>

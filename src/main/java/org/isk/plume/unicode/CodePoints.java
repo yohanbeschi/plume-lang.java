@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
-import org.isk.plume.exception.UnicodeException;
+import org.isk.plume.unicode.exception.UnicodeException;
 
 /**
  * <p>

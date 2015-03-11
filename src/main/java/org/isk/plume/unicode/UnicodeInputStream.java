@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 
-import org.isk.plume.exception.UnicodeException;
 import org.isk.plume.inputstream.QuietAutoCloseable;
 import org.isk.plume.inputstream.QuietAutoCloseableException;
+import org.isk.plume.unicode.exception.UnicodeException;
 
 /**
  * <p>
