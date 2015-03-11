@@ -1,6 +1,4 @@
 .settings/
-build/
-ivy/
-lib/
+target/
 .classpath
 .project

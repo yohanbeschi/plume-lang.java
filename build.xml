@@ -1,7 +1,0 @@
-<project name="plume-lang.java" default="jar"
-         xmlns:isk="http://fake.isk.org/ant-macros"
-         xmlns:ivy="antlib:org.apache.ivy.ant">
-  <import file="conf/common.xml" />
-  <description>plume-lang.java</description>
-
-</project>
