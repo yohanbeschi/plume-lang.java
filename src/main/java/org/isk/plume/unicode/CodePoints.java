@@ -3,6 +3,7 @@ package org.isk.plume.unicode;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
 import org.isk.plume.exception.UnicodeException;
@@ -853,6 +854,10 @@ public class CodePoints implements Iterable<Integer> {
 
     @Override
     public Integer next() {
+      if (this.counter > CodePoints.this.index) {
+        throw new NoSuchElementException();
+      }
+
       return CodePoints.this.buffer[this.counter++];
     }
   }
@@ -867,6 +872,10 @@ public class CodePoints implements Iterable<Integer> {
 
     @Override
     public Integer next() {
+      if (this.counter < 0) {
+        throw new NoSuchElementException();
+      }
+
       return CodePoints.this.buffer[this.counter--];
     }
   }
@@ -1237,7 +1246,6 @@ public class CodePoints implements Iterable<Integer> {
      *          is the {@link ByteArrayOutputStream} to which the code units will be added to.
      */
     public static void codePointToUtf8(final int codePoint, final ByteArrayOutputStream outputStream) {
-      new ByteArrayOutputStream().write(10);
       if (codePoint <= 0x007F) {
         outputStream.write(codePoint);
       } else if (codePoint <= 0x07FF) {
