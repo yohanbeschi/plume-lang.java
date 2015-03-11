@@ -80,7 +80,7 @@ public class MappedCodePoints {
   private int eosIndex = 0;
 
   /**
-   * Instantiates a new <code>MappedCodePoints</code> from an {@link UnicodeInputStream} containing code points of a
+   * Instantiates a new <code>MappedCodePoints</code> from an {@link UnicodeInputStream} containing code units of a
    * specified encoding.
    * 
    * @param charset
@@ -95,7 +95,7 @@ public class MappedCodePoints {
   }
 
   /**
-   * Instantiates a new <code>MappedCodePoints</code> from an {@link UnicodeInputStream} containing code points of a
+   * Instantiates a new <code>MappedCodePoints</code> from an {@link UnicodeInputStream} containing code units of a
    * specified encoding.
    * 
    * @param filename
@@ -113,7 +113,7 @@ public class MappedCodePoints {
   }
 
   /**
-   * Instantiates a new <code>MappedCodePoints</code> from an {@link UnicodeInputStream} containing code points of a
+   * Instantiates a new <code>MappedCodePoints</code> from an {@link UnicodeInputStream} containing code units of a
    * specified encoding.
    * 
    * @param filename
