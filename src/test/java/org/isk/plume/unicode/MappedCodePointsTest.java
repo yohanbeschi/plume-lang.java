@@ -7,27 +7,6 @@ import org.junit.Test;
 
 public class MappedCodePointsTest {
 
-  final private static String THREE_LINES = //
-  "line number 1\n" //
-      + "line number 2\n" //
-      + "line number 3\n";
-
-  final private static String FIVE_LINES = //
-  "line number 1\n" //
-      + "line number 2\n" //
-      + "line number 3\n" //
-      + "line number 4\n" //
-      + "line number 5\n";
-
-  final private static String SEVEN_LINES = //
-  "line number 1\n" //
-      + "line number 2\n" //
-      + "line number 3\n" //
-      + "line number 4\n" //
-      + "line number 5\n" //
-      + "line number 6\n" //
-      + "line number 7\n";
-
   // -------------------------------------------------------------------------------------------------------------------
   // Constants and Getters
   // -------------------------------------------------------------------------------------------------------------------
@@ -648,26 +627,26 @@ public class MappedCodePointsTest {
   }
 
   public static UnicodeInputStream getThreeLines_UnicodeInputStream() {
-    return new UnicodeInputStream(MappedCodePointsTest.THREE_LINES.getBytes(UnicodeTestData.NIO_CHARSET_UTF32BE));
+    return new UnicodeInputStream(UnicodeTestData.THREE_LINES.getBytes(UnicodeTestData.NIO_CHARSET_UTF32BE));
   }
 
   public static UnicodeInputStream getFiveLines_UnicodeInputStream() {
-    return new UnicodeInputStream(MappedCodePointsTest.FIVE_LINES.getBytes(UnicodeTestData.NIO_CHARSET_UTF32BE));
+    return new UnicodeInputStream(UnicodeTestData.FIVE_LINES.getBytes(UnicodeTestData.NIO_CHARSET_UTF32BE));
   }
 
   public static UnicodeInputStream getSevenLines_UnicodeInputStream() {
-    return new UnicodeInputStream(MappedCodePointsTest.SEVEN_LINES.getBytes(UnicodeTestData.NIO_CHARSET_UTF32BE));
+    return new UnicodeInputStream(UnicodeTestData.SEVEN_LINES.getBytes(UnicodeTestData.NIO_CHARSET_UTF32BE));
   }
 
   public static int[] getThreeLines_codepoints() {
-    return MappedCodePointsTest.THREE_LINES.codePoints().toArray();
+    return UnicodeTestData.THREE_LINES.codePoints().toArray();
   }
 
   public static int[] getFiveLines_codepoints() {
-    return MappedCodePointsTest.FIVE_LINES.codePoints().toArray();
+    return UnicodeTestData.FIVE_LINES.codePoints().toArray();
   }
 
   public static int[] getSevenLines_codepoints() {
-    return MappedCodePointsTest.SEVEN_LINES.codePoints().toArray();
+    return UnicodeTestData.SEVEN_LINES.codePoints().toArray();
   }
 }

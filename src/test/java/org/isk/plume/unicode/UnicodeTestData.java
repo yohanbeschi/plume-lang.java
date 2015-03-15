@@ -82,6 +82,27 @@ public class UnicodeTestData {
 
   final public static String CODEPOINTS_AS_STRING = new String(UnicodeTestData.CODEPOINTS, 0, 5);
 
+  final public static String THREE_LINES = //
+  "line number 1\n" //
+      + "line number 2\n" //
+      + "line number 3\n";
+
+  final public static String FIVE_LINES = //
+  "line number 1\n" //
+      + "line number 2\n" //
+      + "line number 3\n" //
+      + "line number 4\n" //
+      + "line number 5\n";
+
+  final public static String SEVEN_LINES = //
+  "line number 1\n" //
+      + "line number 2\n" //
+      + "line number 3\n" //
+      + "line number 4\n" //
+      + "line number 5\n" //
+      + "line number 6\n" //
+      + "line number 7\n";
+
   public static class Line implements Serializable {
     private static final long serialVersionUID = 1L;
     final int codePoint;
