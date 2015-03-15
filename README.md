@@ -2,6 +2,8 @@
 
 Smalltalk-like interpreter in Java.
 
+[![Build Status](https://travis-ci.org/yohanbeschi/plume-lang.java.svg?branch=master)](https://travis-ci.org/yohanbeschi/plume-lang.java)
+
 ## Setup
 Java 8 and Maven need to be installed and accessible from a command line:
 
